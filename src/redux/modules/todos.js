@@ -60,7 +60,7 @@ const todos = (state = initialState, action) => {
       const switchTargetId = action.payload;
       const switchedTodos = state.todo.map((item) => {
         if (item.id === switchTargetId) {
-          return { ...state.todo, isDone: !item.isDone };
+          return { ...item, isDone: !item.isDone };
         } else return item;
       });
 
