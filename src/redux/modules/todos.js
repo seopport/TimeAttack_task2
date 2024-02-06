@@ -9,8 +9,8 @@ const initialState = {
   todo: [
     {
       id: shortid.generate(),
-      title: "3",
-      body: "3",
+      title: "",
+      body: "",
       isDone: false,
     },
   ],
@@ -19,6 +19,18 @@ const initialState = {
 export const addTodo = (payload) => {
   return {
     type: ADD_TODO,
+    payload,
+  };
+};
+export const deleteTodo = (payload) => {
+  return {
+    type: DELETE_TODO,
+    payload,
+  };
+};
+export const switchTodo = (payload) => {
+  return {
+    type: SWITCH_TODO,
     payload,
   };
 };
@@ -33,12 +45,29 @@ const todos = (state = initialState, action) => {
       };
 
     case DELETE_TODO:
-      return state.todo.filter((payload) => {
-        return state.todo.id !== payload;
-      }); //TODO: 여기 작성
+      const deleteTargetId = action.payload;
+      const deleteFilteredList = state.todo.filter(
+        (item) => item.id !== deleteTargetId
+      );
+      return {
+        ...state,
+        todo: deleteFilteredList, //TODO: 여기 작성
+      };
 
-    case "SWITCH_TODO":
-      return; //TODO: 여기 작성
+    case SWITCH_TODO:
+      const switchedList = state.todo.map((item) => {
+        if (item.id === action.payload) {
+          return {
+            ...item,
+            isDone: !item.isDone,
+          };
+        } else return item;
+      });
+
+      return {
+        ...state,
+        todo: switchedList,
+      };
 
     default:
       return state;

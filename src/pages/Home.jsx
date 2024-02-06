@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { addTodo } from "../redux/modules/todos";
+import { addTodo, deleteTodo, switchTodo } from "../redux/modules/todos";
 import shortid from "shortid";
 // {/* - Input 영역 : input 태그 2개, 제출버튼 1개
 // - TodoList 영역 : todos 중 isDone 항목이 false인 개수만큼 Todo 박스 생성. 각 Todo 박스는 제목 텍스트, 내용 텍스트, [완료]버튼, [삭제], [상세보기] 버튼이 표시됨.
@@ -24,7 +24,6 @@ const Home = () => {
   const todoListData = useSelector((state) => {
     return state.todos.todo
   })
-  console.log("🚀 ~ todoListData ~ todoListData:", todoListData)
 
   const handleSubmitButtonClick = () => {
     //dispatch로 값 넘겨주기
@@ -49,9 +48,14 @@ const Home = () => {
     setTodo(e.target.value);
   }
 
-  const handleDoneButtonClick = () => {
-
+  const handleDeleteButtonClick = (id) => {
+    dispatch(deleteTodo(id));
   }
+
+  const handleDoneButtonClick = (id) => {
+    dispatch(switchTodo(id))
+  }
+
 
   return (<div>home
     <header>
@@ -60,13 +64,26 @@ const Home = () => {
     <main>
       제목 : <input value={title} onChange={handleTitleChange} /> 할일 : <input value={todo} onChange={handleTodoChange} /> <button onClick={handleSubmitButtonClick}> 제출 </button >
       <hr></hr>
-      {todoListData.map((item) => {
+      <div> 할일 </div>
+      {todoListData.filter((item) => item.isDone === false).map((item) => {
         return (
-          <StTodoBox>
+          <StTodoBox key={item.id}>
             {item.title} {item.body}
             <br></br>
             <button onClick={() => handleDoneButtonClick(item.id)}>완료</button>
-            <button>삭제</button>
+            <button onClick={() => handleDeleteButtonClick(item.id)}>삭제</button>
+          </StTodoBox>
+        )
+
+      })}
+      <div> 완료된 할일 </div>
+      {todoListData.filter((item) => item.isDone === true).map((item) => {
+        return (
+          <StTodoBox key={item.id}>
+            {item.title} {item.body}
+            <br></br>
+            <button onClick={() => handleDoneButtonClick(item.id)}>취소</button>
+            <button onClick={() => handleDeleteButtonClick(item.id)}>삭제</button>
           </StTodoBox>
         )
 
