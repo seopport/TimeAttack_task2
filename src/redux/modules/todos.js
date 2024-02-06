@@ -39,35 +39,33 @@ export const switchTodo = (payload) => {
 const todos = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TODO:
+      // payload = 추가할 새 할일
       return {
         ...state,
         todo: [...state.todo, action.payload],
+        //좌변의 todo는 state의 하위 속성이므로 state를 붙일 필요가 없다.
+        // state를 풀어헤치고, 그 안의 todo라는 속성을 변경하겠다.
       };
 
     case DELETE_TODO:
+      //payload = 삭제할 할일의 id값
       const deleteTargetId = action.payload;
-      const deleteFilteredList = state.todo.filter(
+      const deletedTodos = state.todo.filter(
         (item) => item.id !== deleteTargetId
       );
-      return {
-        ...state,
-        todo: deleteFilteredList, //TODO: 여기 작성
-      };
+      return { ...state, todo: deletedTodos };
 
     case SWITCH_TODO:
-      const switchedList = state.todo.map((item) => {
-        if (item.id === action.payload) {
-          return {
-            ...item,
-            isDone: !item.isDone,
-          };
+      //payload = 상태를 변경할 id값
+      const switchTargetId = action.payload;
+      const switchedTodos = state.todo.map((item) => {
+        if (item.id === switchTargetId) {
+          return { ...state.todo, isDone: !item.isDone };
         } else return item;
       });
 
-      return {
-        ...state,
-        todo: switchedList,
-      };
+      console.log("🚀 ~ todos ~ switchedTodos:", switchedTodos);
+      return { ...state, todo: switchedTodos };
 
     default:
       return state;
