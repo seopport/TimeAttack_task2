@@ -32,11 +32,13 @@ const todos = (state = initialState, action) => {
         todo: [...state.todo, action.payload],
       };
 
-    // case "DELETE_TODO":
-    //   return; //TODO: 여기 작성
+    case DELETE_TODO:
+      return state.todo.filter((payload) => {
+        return state.todo.id !== payload;
+      }); //TODO: 여기 작성
 
-    // case "SWITCH_TODO":
-    //   return; //TODO: 여기 작성
+    case "SWITCH_TODO":
+      return; //TODO: 여기 작성
 
     default:
       return state;

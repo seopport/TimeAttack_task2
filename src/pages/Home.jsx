@@ -49,6 +49,10 @@ const Home = () => {
     setTodo(e.target.value);
   }
 
+  const handleDoneButtonClick = () => {
+
+  }
+
   return (<div>home
     <header>
       <h1>Redux로 TodoList 만들기</h1>
@@ -60,6 +64,9 @@ const Home = () => {
         return (
           <StTodoBox>
             {item.title} {item.body}
+            <br></br>
+            <button onClick={() => handleDoneButtonClick(item.id)}>완료</button>
+            <button>삭제</button>
           </StTodoBox>
         )
 
